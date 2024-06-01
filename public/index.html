@@ -40,11 +40,11 @@
                     if (data.url) {
                         photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
                     } else {
-                        photoContainer.innerHTML = `<p>写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</p>`;
+                        photoContainer.innerHTML = `<p><font color="#ffffff">写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</font></p>`;
                     }
                 })
                 .catch(error => {
-                    photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
+                    photoContainer.innerHTML = `<p><font color="#ffffff">エラーが発生しました。</font></p>`;
                 });
         });
     </script>
