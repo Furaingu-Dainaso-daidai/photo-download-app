@@ -31,11 +31,3 @@ exports.handler = async (event) => {
 <script type="text/javascript">
 function runOpen(){
   document.getElementById("runArea").className = 'runBg';
- 
-  // ここにsubumitの実行
-  // document.myForm.submit();
- 
-  // サンプルのため「false」で返す
-  return false;
-}
-</script>
