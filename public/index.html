@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番号で写真ダウンロード</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>番号で写真ダウンロード</h1>
+    <form id="photo-form">
+        <input type="text" id="photo-number" placeholder="写真番号を入力" required>
+        <button type="submit">ダウンロード</button>
+    </form>
+    <div id="photo-container"></div>
+
+    <script>
+        document.getElementById('photo-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const photoNumber = document.getElementById('photo-number').value;
+            const photoContainer = document.getElementById('photo-container');
+
+            fetch(`/.netlify/functions/get-photo?number=${photoNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
+                    } else {
+                        photoContainer.innerHTML = `<p>写真が見つかりませんでした。</p>`;
+                    }
+                })
+                .catch(error => {
+                    photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
+                });
+        });
+    </script>
+</body>
+</html>
