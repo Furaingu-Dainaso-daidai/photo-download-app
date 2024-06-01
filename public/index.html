@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffff00;
+            background-color: #faf6a7;
             text-align: center;
             margin-top: 50px;
         }
@@ -40,11 +40,11 @@
                     if (data.url) {
                         photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
                     } else {
-                        photoContainer.innerHTML = `<p><font color="#ffffff">写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</font></p>`;
+                        photoContainer.innerHTML = `<p>写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</p>`;
                     }
                 })
                 .catch(error => {
-                    photoContainer.innerHTML = `<p><font color="#ffffff">エラーが発生しました。</font></p>`;
+                    photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
                 });
         });
     </script>
