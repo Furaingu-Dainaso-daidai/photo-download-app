@@ -50,3 +50,15 @@
     </script>
 </body>
 </html>
+<!-- 実行するformエリア -->
+<form name="myForm" action="xxx.cgi" onsubmit="return runOpen()">
+  <input type="submit" value="実行中の動きを確認する">
+</form>
+ 
+<!-- 実行中ウインドウのエリア -->
+<div id="runArea" class="runNoDisp">
+  <div class="runWindow"> <!-- ここがウインドウとなります -->
+    <p>準備中<br>しばらくお待ちください</p>
+    <div class="bar"></div>
+  </div>
+</div>
