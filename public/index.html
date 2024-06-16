@@ -24,10 +24,12 @@
             z-index: 1000;
         }
         .message {
-            font-size: 10em;
+            font-size: 30vw; /* 画面の幅に対して30%の大きさ */
             font-weight: bold;
             color: #ffcc00;
             animation: fade 1.5s infinite alternate;
+            text-align: center;
+            line-height: 1;
         }
         @keyframes fade {
             0% { opacity: 0; }
@@ -54,15 +56,39 @@
             top: 5px;
             right: 10px;
         }
+        /* クラッカーのアニメーション */
+        .cracker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff5733;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1s ease-out infinite;
+        }
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(100px, -100px) rotate(720deg);
+            }
+        }
     </style>
 </head>
 <body>
 <div class="thank-you-message" id="thank-you-message">
-    <div>ご来店ありがとうございました！</div>
+    <div>ご来店</div>
+    <div>ありがとうございました！</div>
     <div class="close-button" id="close-button" onclick="closeThankYouMessage()">&times;</div>
 </div>
 <div class="overlay">
     <div class="message">準備中</div>
+    <div class="cracker" style="top: 20%; left: 20%;"></div>
+    <div class="cracker" style="top: 70%; left: 70%;"></div>
+    <!-- クラッカーを追加 -->
 </div>
 <!-- 他のコンテンツこれより上を消す -->
 <!DOCTYPE html>
@@ -157,7 +183,4 @@
             document.getElementById('thank-you-message').style.display = 'none';
         }
 
-        document.getElementById('thank-you-message').style.display = 'block'; // ページロード時にメッセージを表示
-    </script>
-</body>
-</html>
+        document.getElementById('thank-you-message').style
