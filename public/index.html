@@ -42,11 +42,12 @@
             transform: translate(-50%, -50%);
             background-color: #ff5733;
             color: #fff;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             z-index: 1001; /* 準備中のテロップよりも上に表示 */
             display: none; /* 最初は非表示 */
             border-radius: 10px;
+            font-size: 2em; /* 2emの大きさに設定 */
         }
         .close-button {
             font-size: 30px;
@@ -80,8 +81,7 @@
 </head>
 <body>
 <div class="thank-you-message" id="thank-you-message">
-    <div>ご来店</div>
-    <div>ありがとうございました！</div>
+    <div>ご来店ありがとうございました！</div>
     <div class="close-button" id="close-button" onclick="closeThankYouMessage()">&times;</div>
 </div>
 <div class="overlay">
@@ -159,28 +159,4 @@
             if (userAnswer !== correctAnswer) {
                 alert("計算の答えが間違っています。もう一度試してください。");
                 correctAnswer = generateMathQuestion();
-                return;
-            }
-
-            const photoNumber = document.getElementById('photo-number').value;
-            const photoContainer = document.getElementById('photo-container');
-
-            fetch(`/.netlify/functions/get-photo?number=${photoNumber}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.url) {
-                        photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
-                    } else {
-                        photoContainer.innerHTML = `<p>写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</p>`;
-                    }
-                })
-                .catch(error => {
-                    photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
-                });
-        });
-
-        function closeThankYouMessage() {
-            document.getElementById('thank-you-message').style.display = 'none';
-        }
-
-        document.getElementById('thank-you-message').style
+                return
