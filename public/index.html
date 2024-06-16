@@ -22,13 +22,24 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            font-size: 2em;
+        }
+        .message {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffcc00;
+            animation: fade 1.5s infinite alternate;
+        }
+        @keyframes fade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-<div class="overlay">準備中です</div>
+<div class="overlay">
+    <div class="message">準備中</div>
+</div>
 
 <!-- 他のコンテンツ -->
 
@@ -87,11 +98,3 @@
     </script>
 </body>
 </html>
-
-<!-- 実行中ウインドウのエリア -->
-<div id="runArea" class="runNoDisp">
-  <div class="runWindow"> <!-- ここがウインドウとなります -->
-    <p>準備中<br>しばらくお待ちください</p>
-    <div class="bar"></div>
-  </div>
-</div>
