@@ -24,12 +24,10 @@
             z-index: 1000;
         }
         .message {
-            font-size: 30vw; /* 画面の幅に対して30%の大きさ */
+            font-size: 10em;
             font-weight: bold;
             color: #ffcc00;
             animation: fade 1.5s infinite alternate;
-            text-align: center;
-            line-height: 1;
         }
         @keyframes fade {
             0% { opacity: 0; }
@@ -42,12 +40,11 @@
             transform: translate(-50%, -50%);
             background-color: #ff5733;
             color: #fff;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
             z-index: 1001; /* 準備中のテロップよりも上に表示 */
             display: none; /* 最初は非表示 */
             border-radius: 10px;
-            font-size: 2em; /* 2emの大きさに設定 */
         }
         .close-button {
             font-size: 30px;
@@ -56,26 +53,6 @@
             position: absolute;
             top: 5px;
             right: 10px;
-        }
-        /* クラッカーのアニメーション */
-        .cracker {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ff5733;
-            border-radius: 50%;
-            opacity: 0;
-            animation: explode 1s ease-out infinite;
-        }
-        @keyframes explode {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) rotate(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(100px, -100px) rotate(720deg);
-            }
         }
     </style>
 </head>
@@ -86,9 +63,6 @@
 </div>
 <div class="overlay">
     <div class="message">準備中</div>
-    <div class="cracker" style="top: 20%; left: 20%;"></div>
-    <div class="cracker" style="top: 70%; left: 70%;"></div>
-    <!-- クラッカーを追加 -->
 </div>
 <!-- 他のコンテンツこれより上を消す -->
 <!DOCTYPE html>
@@ -159,4 +133,31 @@
             if (userAnswer !== correctAnswer) {
                 alert("計算の答えが間違っています。もう一度試してください。");
                 correctAnswer = generateMathQuestion();
-                return
+                return;
+            }
+
+            const photoNumber = document.getElementById('photo-number').value;
+            const photoContainer = document.getElementById('photo-container');
+
+            fetch(`/.netlify/functions/get-photo?number=${photoNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
+                    } else {
+                        photoContainer.innerHTML = `<p>写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</p>`;
+                    }
+                })
+                .catch(error => {
+                    photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
+                });
+        });
+
+        function closeThankYouMessage() {
+            document.getElementById('thank-you-message').style.display = 'none';
+        }
+
+        document.getElementById('thank-you-message').style.display = 'block'; // ページロード時にメッセージを表示
+    </script>
+</body>
+</html>
