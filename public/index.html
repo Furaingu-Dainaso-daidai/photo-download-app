@@ -8,29 +8,33 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
+            overflow: hidden; /* スクロールを無効にする */
         }
-        .marquee {
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: #ffcc00;
-            color: #000;
-            text-align: center;
-            padding: 10px 0;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* 背景を暗くする */
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 1000;
-            font-size: 1.5em;
+            font-size: 2em;
         }
     </style>
 </head>
 <body>
 
-<div class="marquee">準備中です</div>
+<div class="overlay">準備中です</div>
 
 <!-- 他のコンテンツ -->
 
 </body>
 </html>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
