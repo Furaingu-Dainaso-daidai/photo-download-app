@@ -33,23 +33,38 @@
             margin-bottom: 20px;
         }
     </style>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <h1 class="title">写真ダウンロード</h1>
     <h2 style="margin-top: -20px;">下のフィールドのURLから、写真がダウンロードできます。</h2>
     <form id="photo-form">
         <input type="text" id="photo-number" placeholder="写真番号を入力" required>
-        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+        <div id="math-captcha">
+            <label id="math-question"></label>
+            <input type="text" id="math-answer" placeholder="答えを入力" required>
+        </div>
         <button type="submit">ダウンロード</button>
     </form>
     <div id="photo-container"></div>
 
     <script>
+        function generateMathQuestion() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const question = `${num1} + ${num2}`;
+            document.getElementById('math-question').innerText = `${question} = `;
+            return num1 + num2;
+        }
+
+        let correctAnswer = generateMathQuestion();
+
         document.getElementById('photo-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            if (grecaptcha.getResponse() === "") {
-                alert("reCAPTCHAを完了してください。");
+            const userAnswer = parseInt(document.getElementById('math-answer').value);
+
+            if (userAnswer !== correctAnswer) {
+                alert("答えが間違っています。もう一度試してください。");
+                correctAnswer = generateMathQuestion();
                 return;
             }
 
