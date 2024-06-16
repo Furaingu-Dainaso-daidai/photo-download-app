@@ -24,7 +24,7 @@
             z-index: 1000;
         }
         .message {
-            font-size: 3em;
+            font-size: 10em;
             font-weight: bold;
             color: #ffcc00;
             animation: fade 1.5s infinite alternate;
@@ -59,19 +59,36 @@
             text-align: center;
             margin-top: 50px;
         }
+        h1.title {
+            font-size: 3em;
+            color: #ff5733;
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
         input, button {
             padding: 10px;
             margin: 5px;
             font-size: 16px;
         }
+        form {
+            margin-bottom: 20px;
+        }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    <h1>写真ダウンロード<h1>
-      <br>
-    <h1><font size="4">下のフィールドのURLから、写真がダウンロードできます。</font></h1>
+    <h1 class="title">写真ダウンロード</h1>
+    <h2 style="margin-top: -20px;">下のフィールドのURLから、写真がダウンロードできます。</h2>
     <form id="photo-form">
         <input type="text" id="photo-number" placeholder="写真番号を入力" required>
+        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
         <button type="submit">ダウンロード</button>
     </form>
     <div id="photo-container"></div>
@@ -79,6 +96,11 @@
     <script>
         document.getElementById('photo-form').addEventListener('submit', function(event) {
             event.preventDefault();
+            if (grecaptcha.getResponse() === "") {
+                alert("reCAPTCHAを完了してください。");
+                return;
+            }
+
             const photoNumber = document.getElementById('photo-number').value;
             const photoContainer = document.getElementById('photo-container');
 
