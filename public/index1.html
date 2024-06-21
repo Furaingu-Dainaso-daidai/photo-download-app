@@ -32,7 +32,6 @@
         @keyframes fade {
             0% { opacity: 0; }
             100% { opacity: 1; }
-            
         }
         .thank-you-message {
             position: fixed;
@@ -58,6 +57,9 @@
             font-family: Georgia, serif;
             z-index: 1001; /* 準備中のテロップよりも上に表示 */
         }
+        body.ready {
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
@@ -66,16 +68,10 @@
     <div>準備中のため後日、再度お試しください。</div>
     <div class="close-button" id="close-button" onclick="closeThankYouMessage()">&times;</div>
 </div>
-<div class="overlay">
+<div class="overlay" id="overlay">
     <div class="message">準備中…</div>
 </div>
-<!-- 他のコンテンツこれより上を消す -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>子ども夜市用写真ダウンロードサイト(簡易版)</title>
+<div style="display:none;" id="main-content">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -104,7 +100,6 @@
         form {
             margin-bottom: 20px;
         }
-        /* 追加部分 */
         #thanks-message {
             background-color: #008000;
             color: rgb(255, 255, 255);
@@ -112,11 +107,9 @@
             font-size: 2em;
         }
     </style>
-</head>
-<body>
-    <!-- ここにテロップを追加 -->
+
     <div id="thanks-message">ご来店ありがとうございました！</div>
-    
+
     <h1 class="title">写真ダウンロード</h1>
     <h2 style="margin-top: -15px;">下のフィールドに番号を入力すると写真がダウンロードできます。</h2>
     <h2 style="margin-top: -10px;">セキュリティ保護のため、合わせて簡単な計算をしてください。</h2>
@@ -129,44 +122,54 @@
         <button type="submit">ダウンロード</button>
     </form>
     <div id="photo-container"></div>
+</div>
 
-    <script>
-        function generateMathQuestion() {
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            const question = `${num1} + ${num2}`;
-            document.getElementById('math-question').innerText = `${question} = `;
-            return num1 + num2;
+<script>
+    function generateMathQuestion() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        const question = `${num1} + ${num2}`;
+        document.getElementById('math-question').innerText = `${question} = `;
+        return num1 + num2;
+    }
+
+    let correctAnswer = generateMathQuestion();
+
+    document.getElementById('photo-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const userAnswer = parseInt(document.getElementById('math-answer').value);
+
+        if (userAnswer !== correctAnswer) {
+            alert("答えが間違っています。もう一度試してください。");
+            correctAnswer = generateMathQuestion();
+            return;
         }
 
-        let correctAnswer = generateMathQuestion();
+        const photoNumber = document.getElementById('photo-number').value;
+        const photoContainer = document.getElementById('photo-container');
 
-        document.getElementById('photo-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const userAnswer = parseInt(document.getElementById('math-answer').value);
+        fetch(`/.netlify/functions/get-photo?number=${photoNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
+                } else {
+                    photoContainer.innerHTML = `<p>写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</p>`;
+                }
+            })
+            .catch(error => {
+                photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
+            });
+    });
 
-            if (userAnswer !== correctAnswer) {
-                alert("答えが間違っています。もう一度試してください。");
-                correctAnswer = generateMathQuestion();
-                return;
-            }
+    function closeThankYouMessage() {
+        document.getElementById('thank-you-message').style.display = 'none';
+        document.body.classList.add('ready');
+        document.getElementById('main-content').style.display = 'block';
+        document.getElementById('overlay').style.display = 'none';
+    }
 
-            const photoNumber = document.getElementById('photo-number').value;
-            const photoContainer = document.getElementById('photo-container');
-
-            fetch(`/.netlify/functions/get-photo?number=${photoNumber}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.url) {
-                        photoContainer.innerHTML = `<img src="${data.url}" alt="写真" style="max-width: 100%;"><br><a href="${data.url}" download>ダウンロード</a>`;
-                    } else {
-                        photoContainer.innerHTML = `<p>写真ダウンロードURLが見つかりませんでした。もう一度入力してみてください。</p>`;
-                    }
-                })
-                .catch(error => {
-                    photoContainer.innerHTML = `<p>エラーが発生しました。</p>`;
-                });
-        });
-    </script>
+    document.getElementById('close-button').addEventListener('click', closeThankYouMessage);
+</script>
 </body>
 </html>
