@@ -22,6 +22,7 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
+
         }
         .message {
             font-size: 5em;
@@ -32,7 +33,6 @@
         @keyframes fade {
             0% { opacity: 0; }
             100% { opacity: 1; }
-            
         }
         .thank-you-message {
             position: fixed;
@@ -56,7 +56,6 @@
             top: 5px;
             right: 10px;
             font-family: Georgia, serif;
-            z-index: 1001; /* 準備中のテロップよりも上に表示 */
         }
     </style>
 </head>
@@ -104,17 +103,21 @@
             margin-bottom: 20px;
         }
         /* 追加部分 */
-        #thanks-message {
+        #thanks-message1 {
+            position: sticky;
+            top: 2px;
             background-color: #008000;
             color: rgb(255, 255, 255);
-            padding: 12px;
+            padding: 0.5px;
             font-size: 2em;
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
     <!-- ここにテロップを追加 -->
-    <div id="thanks-message">ご来店ありがとうございました！</div>
+    <div id="thanks-message1">ご来店ありがとうございました！</div>
+    <div id="thanks-message1">準備中のため後日、再度お試しください。</div>
     
     <h1 class="title">写真ダウンロード</h1>
     <h2 style="margin-top: -15px;">下のフィールドに番号を入力すると写真がダウンロードできます。</h2>
